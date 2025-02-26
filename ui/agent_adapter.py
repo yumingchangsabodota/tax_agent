@@ -25,7 +25,7 @@ class AgentAdapter:
         }
 
         response = requests.post(
-            f"{self.url}/ticket-helper/call", headers=self.headers, json=body)
+            f"{self.url}/tax-agent", headers=self.headers, json=body)
         response = response.json()
 
         return response['message'], response['session_id']

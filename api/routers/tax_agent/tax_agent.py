@@ -26,7 +26,7 @@ smart_agent = LuciusRouterAgent(
     azure_llm_4o_mini_standard, checkpointer=checkpointer)
 
 
-@router.post("/call")
+@router.post("/")
 async def call(user_input: UserMessage) -> AIResponse:
 
     current_date = datetime.today().strftime(format="%Y-%m-%d")

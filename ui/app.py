@@ -12,7 +12,7 @@ adapter = AgentAdapter()
 
 
 app_ui = ui.page_fillable(
-    ui.panel_title("Lucius Agent UI"),
+    ui.panel_title("Tax Agent UI"),
     ui.chat_ui("chat"),
     fillable_mobile=True,
 )
@@ -20,9 +20,8 @@ app_ui = ui.page_fillable(
 # Create a welcome message
 welcome = ui.markdown(
     """
-    Hi! This is a testing chat UI app for Lucius Agent.
-    Lucius Agent is an asistant that helps user to figure out what tickets they need to submit, collect all the necessary information and submit the ticket for them.
-    [Check Lucius Code Base](https://adc.github.trendmicro.com/Corp-IT/lucius).
+    Hi! This is a testing chat UI app for Tax Agent.
+    Tax Agent is a conversational AI that can help you with your tax-related queries.
     """
 )
 
