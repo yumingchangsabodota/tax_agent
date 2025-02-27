@@ -4,6 +4,10 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
 
 RUN apt-get update 
+RUN apt-get install -y chromium-driver chromium && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
 RUN pip install --upgrade pip
 
