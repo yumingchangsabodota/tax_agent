@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium_stealth import stealth
 
 TAX_DOC_PAGE = "https://fbfh.trade.gov.tw/fh/ap/listCCCf.do"
@@ -66,18 +67,22 @@ try:
     wait.until(EC.presence_of_element_located((By.TAG_NAME, "a")))
 
     download_links = driver.find_elements(
-        By.XPATH, '//a[contains(@href, "downloadFile")]')
+        By.XPATH, '//a[contains(@href, "javascript:downloadFile") and contains(@class, "text-success")]')
     print(f"Found {len(download_links)} download link(s).")
 
     # Iterate over each download link and click it
     for index, link in enumerate(download_links):
+        print(link)
         try:
-            wait.until(EC.element_to_be_clickable(link))
+            # wait.until(EC.element_to_be_clickable(link))
+            # link.click()
+            actions = ActionChains(driver)
+            actions.move_to_element(link).click().perform()
             print(f"Clicking download link {index}...")
-            link.click()
+
             slp_time = random.uniform(1, 2)
             print(f"Sleeping for {slp_time} seconds...")
-            time.sleep(slp_time)
+            driver.implicitly_wait(slp_time)
 
         except Exception as e:
             print(f"Could not click link {index}: {e}")
