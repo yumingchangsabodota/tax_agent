@@ -62,4 +62,5 @@ for file in os.listdir(path):
     tables = extract_tables_from_pdf(file_path)
     # print(tables)
     save_tables_as_csv(tables, csv_path)
+
     break
