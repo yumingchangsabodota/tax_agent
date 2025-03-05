@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 class UserMessage(BaseModel):
     message: str
-    user_email: str
     session_id: str
 
 
