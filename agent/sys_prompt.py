@@ -10,6 +10,13 @@ Return at least 3 answers extracted from the search results which are the most r
 - 輸入規定 (Import)
 - 輸出規定 (Export)
 
+FORMAT:
+| 稅則號別   | 貨品分類號列 (CCC Code) | 檢查號碼 (CD) | 貨名 (Description of goods) | 輸入規定 (Import) | 輸出規定 (Export) |\n
+|:------:|:------:|:------:|:------:|:------:|:------:|\n
+| 8523.52.00 | | | 智慧卡"Smart cards" | | |\n
+| 8523.52.00 | 10 | 7 | 近接感應卡及牌Proximity cards and tags | | |\n
+| 8523.52.00 | 90 | 0 | 其他智慧卡Other "Smart cards" | MW0 | S01 |
+
 CONDITIONS:
 1. Present results exactly as they appear; do not alter any column content, especially 貨名.
 2. Keep the column 貨品分類號列 (CCC Code) unchanged from the search result.
