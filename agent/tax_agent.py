@@ -13,7 +13,7 @@ from agent.sys_prompt import SYS_PROMPT
 from agent.message_reducer import reduce_messages
 from ai_model.openai_model import openai_4o_mini
 
-from db.mongo.tax_doc_vector_store import collection as tax_category_collection, vector_store as tax_category_vector_store
+from db.mongo.tax_doc_vector_store import vector_store
 
 
 logger = logging.getLogger("tax_agent")
@@ -24,15 +24,17 @@ def retrieve_tax_category_info(query: str) -> str:
     """Useful tool to retrieve tax category based on user input"""
     logger.debug("-----retrieve_tax_category_info-----")
     logger.debug(f"Query: {query}")
-    results = tax_category_vector_store.similarity_search(query=query,
-                                                          k=1)
+    results = vector_store.similarity_search(query=query,
+                                             k=5)
     possible_categories = []
-    for r in results:
-        possible_categories.append(r.page_content)
-    possible_categories = "".join(possible_categories)
-    logger.debug("Category is in one of these:\n" + possible_categories)
+    for i in range(len(results)):
+        logger.debug(results[i])
+        possible_categories.append(f"Page {i+1}\n" + results[i].page_content)
+    possible_categories = "\n\n".join(possible_categories)
+    logger.debug(
+        "Possible answer is in one of the below pages:\n" + possible_categories)
     logger.debug("-----retrieve_tax_category_info-----")
-    return {"message": "Category is in one of these:\n" + possible_categories}
+    return {"message": "Possible answer is in one of the below pages:\n" + possible_categories}
 
 
 class TaxAgentState(TypedDict):
@@ -78,6 +80,7 @@ class TaxAgent:
         results = []
         for t in tool_calls:
             logger.debug("-----tool_node-----")
+            logger.debug(t)
             tool_response = self.tools[t['name']].invoke(t['args'])
             results.append(ToolMessage(tool_call_id=t['id'],
                                        name=t['name'],

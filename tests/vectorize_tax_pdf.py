@@ -1,20 +1,18 @@
 
 import os
 import pdfplumber
-import pandas as pd
-import csv
-import json
+from uuid import uuid4
 
+from typing import List
+from langchain_core.documents import Document
+
+from pydantic import BaseModel, Field
 from db.mongo.tax_doc_vector_store import vector_store
 from ai_model.openai_model import text_embedding_3_small
 from db.mongo.tax_doc_vector_store import collection
 
-from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 
 path = "db/migration/tax_pdf"
-path_csv = "db/migration/tax_csv"
 
 
 def extract_tables_from_pdf(filename):
@@ -32,35 +30,42 @@ def extract_tables_from_pdf(filename):
         return None
 
 
-def save_tables_as_csv(tables, filename):
-    base_filename = filename.split('.')[0]
+def set_empty_cell(row):
+    for i, cell in enumerate(row):
+        if cell == "":
+            row[i] = " "
+    return row
+
+
+def parse_tables_to_markdown(tables) -> List[str]:
+    markdowns = []
+    columns = ["稅則號別", "貨品分類列號 CCC Code", "檢查號碼 CD",
+               "貨名 Description of goods", "輸入規定 Import", "輸出規定 Export"]
+
+    headers = "|"+"|".join(columns)+"|"+"\n"
+    headers += "|"+"|".join([":---------------:"]*len(columns))+"|"+"\n"
     for i, table in enumerate(tables):
-        header = table[0]
-        data = table[3:]
-        df = pd.DataFrame(data)
-        csv_filename = f"{base_filename}_table_{i+1}.csv"
-        df.to_csv(csv_filename, index=False, encoding='utf-8-sig')
-        print(f"Saved table {i+1} as {csv_filename}")
+        markdown = headers
+        table_rows = table[2:]
+        for row in table_rows:
+            row = [str(cell).replace("\n", '') for cell in row]
+            row = set_empty_cell(row)
+            markdown += "|"+"|".join(row)+"|"+"\n"
+        markdowns.append(markdown)
+    return markdowns
 
 
-"""
-for file in os.listdir(path):
-    print(f"Vectorizing {file}")
-    file_path = os.path.join(path, file)
-    loader = PyPDFLoader(file_path)
-    data = loader.load()
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=3000, chunk_overlap=500)
-    docs = text_splitter.split_documents(data)
-    vector_store.from_documents(
-        documents=docs, embedding=text_embedding_3_small, collection=collection)
-"""
+def insert_documents(docs: List[str]):
+    pages = [Document(page_content=doc)
+             for doc in docs]
+    ids = [str(uuid4()) for _ in range(len(pages))]
+    vector_store.add_documents(documents=pages, doc_ids=ids)
+
+
 for file in os.listdir(path):
     print(f"Parsing {file}")
     file_path = os.path.join(path, file)
-    csv_path = os.path.join(path_csv, file)
     tables = extract_tables_from_pdf(file_path)
-    # print(tables)
-    save_tables_as_csv(tables, csv_path)
-
-    break
+    makrdowns = parse_tables_to_markdown(tables)
+    insert_documents(makrdowns)
+    print(f"Done parsing {file}")

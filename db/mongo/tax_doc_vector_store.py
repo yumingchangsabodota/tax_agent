@@ -3,7 +3,7 @@
 from ai_model.openai_model import text_embedding_3_small
 
 from db.mongo.mongo_connector import mongo_atlas_db
-from langchain_mongodb import MongoDBAtlasVectorSearch
+from langchain_mongodb.vectorstores import MongoDBAtlasVectorSearch
 
 db_name = "tax_doc"
 collection_name = "tax_category"
