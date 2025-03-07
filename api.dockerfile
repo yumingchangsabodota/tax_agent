@@ -19,11 +19,7 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r ./requirements.txt
 
-COPY agent agent
-COPY ai_model ai_model
-COPY db db
-COPY api api
-COPY ui ui
+COPY . /app
 
 EXPOSE 8086
 EXPOSE 80

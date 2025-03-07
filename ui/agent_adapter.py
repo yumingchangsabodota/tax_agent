@@ -3,7 +3,7 @@ import requests
 
 from typing import Tuple
 
-AGENT_URL: str = os.environ.get('AGENT_URL', 'http://localhost:8087')
+AGENT_URL: str = os.environ.get('AGENT_URL', 'http://localhost:8086')
 POC_AUTH_KEY: str = os.environ.get('POC_AUTH_KEY', '')
 
 

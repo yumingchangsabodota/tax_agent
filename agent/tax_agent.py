@@ -25,7 +25,7 @@ def retrieve_tax_category_info(query: str) -> str:
     logger.debug("-----retrieve_tax_category_info-----")
     logger.debug(f"Query: {query}")
     results = vector_store.similarity_search(query=query,
-                                             k=5)
+                                             k=3)
     possible_categories = []
     for i in range(len(results)):
         logger.debug(results[i])
