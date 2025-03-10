@@ -1,8 +1,8 @@
-## Tax Agent
+# Tax Agent
 
-### This is an agent that utilizes augmented retrieval to search for the Taiwan import export tax categories by a given description of a product.
+##### This is an agent that utilizes augmented retrieval to search for the Taiwan import export tax categories by a given description of a product.
 
-### Architecture
+## Architecture
 ```mermaid
 flowchart LR
 
@@ -28,8 +28,7 @@ db_m --RAG Search--> agent
 [Tax Category Source](https://fbfh.trade.gov.tw/fh/ap/listCCCf.do)
 
 
-Examples:
-
+## Examples
 
 ![Example 1](img/example1.png)
 ![Example 2](img/example2.png)
