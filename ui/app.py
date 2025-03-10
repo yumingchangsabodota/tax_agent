@@ -6,6 +6,7 @@ from shiny.session import Session
 
 from ui.agent_adapter import AgentAdapter
 
+
 logger = logging.getLogger("shiny.ui")
 
 adapter = AgentAdapter()
@@ -34,6 +35,8 @@ def server(input, output, session: Session):
     async def _():
         # Get the user's input
         user = chat.user_input()
+        # tmp fix for the shiny ui bug for chinese input (Chinese input needs to press return twice)
+        chat.update_user_input(value="")
 
         # Append a response to the chat
         if user == None:
