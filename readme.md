@@ -24,11 +24,10 @@ db_m --RAG Search--> agent
 
 ```
 
-
+## Resource
 [Tax Category Source](https://fbfh.trade.gov.tw/fh/ap/listCCCf.do)
 
 
 ## Examples
-
 ![Example 1](img/example1.png)
 ![Example 2](img/example2.png)
