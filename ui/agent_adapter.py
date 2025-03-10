@@ -16,11 +16,10 @@ class AgentAdapter:
             'Authorization': POC_AUTH_KEY
         }
 
-    def call_ai(self, msg: str, user_email: str, session_id: str) -> Tuple[str, str]:
+    def call_ai(self, msg: str, session_id: str) -> Tuple[str, str]:
 
         body = {
             "message": msg,
-            "user_email": user_email,
             "session_id": session_id
         }
 

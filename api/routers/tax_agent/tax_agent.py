@@ -10,18 +10,22 @@ from langchain_core.messages import HumanMessage
 from api.routers.tax_agent.model.message import UserMessage, AIResponse
 from agent.tax_agent import TaxAgent
 
+from langgraph.checkpoint.mongodb import MongoDBSaver
+
+from db.mongo.mongo_connector import mongo_atlas_db
+
 
 logger = logging.getLogger("tax_agent.api")
 
 router = APIRouter()
 
-smart_agent = TaxAgent()
+checkpointer = MongoDBSaver(mongo_atlas_db)
+smart_agent = TaxAgent(checkpointer)
 
 
 @router.post("/")
 async def call(user_input: UserMessage) -> AIResponse:
 
-    current_date = datetime.today().strftime(format="%Y-%m-%d")
     session_id = user_input.session_id
 
     thread = {"configurable": {"thread_id": session_id}}

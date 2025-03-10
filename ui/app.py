@@ -41,7 +41,7 @@ def server(input, output, session: Session):
         # Append a response to the chat
         if user == None:
             user = ""
-        agent_res = adapter.call_ai(user, session.id, session.id)
+        agent_res = adapter.call_ai(user, session.id)
         logger.debug(f"User: {user} Agent response: {agent_res}")
         agent_output = ui.markdown(agent_res[0])
         await chat.append_message(f"{agent_output}")
